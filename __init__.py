@@ -164,9 +164,10 @@ class SelectionSetsPlugin:
 
     def updateSelection(self, data):
         for layer in QgsMapLayerRegistry.instance().mapLayers().values():
-            layer.removeSelection()
-            try:
-                ids = data[layer.id()]
-                layer.select(ids)
-            except KeyError:
-                pass
+            if isinstance(layer, QgsVectorLayer):
+                layer.removeSelection()
+                try:
+                    ids = data[layer.id()]
+                    layer.select(ids)
+                except KeyError:
+                    pass
